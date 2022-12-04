@@ -9,5 +9,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Store extends Model
 {
     use HasFactory ,  SoftDeletes;
+    protected $fillable = ['name' , 'logo'];
+
+    public function products()
+    {
+        return $this->hasMany(Product::class , 'store_id' , 'id');
+    }
 
 }

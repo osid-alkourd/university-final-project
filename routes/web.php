@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+   return redirect()->route('making_purchase.stores');
 });
 
 Route::get('/dashboard', function () {
@@ -22,3 +22,7 @@ Route::get('/dashboard', function () {
 })->middleware(['auth'])->name('dashboard');
 
 require __DIR__.'/auth.php';
+require __DIR__.'/product.php';
+require __DIR__.'/store.php';
+require __DIR__.'/makingPurchase.php';
+require __DIR__.'/viewPurchase.php';

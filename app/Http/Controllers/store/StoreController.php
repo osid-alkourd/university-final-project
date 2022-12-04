@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\store;
 
 use App\Http\Controllers\Controller;
+use App\Models\Product;
+use App\Models\Store;
 use Illuminate\Http\Request;
 
 class StoreController extends Controller
@@ -14,7 +16,9 @@ class StoreController extends Controller
      */
     public function index()
     {
-        //
+        $stores = Store::all();
+       // dd($stores);
+        return view('stores.index' , compact('stores'));
     }
 
     /**
@@ -24,7 +28,7 @@ class StoreController extends Controller
      */
     public function create()
     {
-        //
+        return view('stores.create');
     }
 
     /**
@@ -35,7 +39,13 @@ class StoreController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => ['required' , 'unique:stores,name' , 'max:20' , 'min:2'] , 
+           // 'logo' => ['required' , 'image' , 'mimes:jpg,bmp,png' , 'max:500'] , 
+              ]);
+            $store_data = $request->all();
+            Store::create($store_data);
+           return redirect()->route('store.index')->with('success' , 'success created');   
     }
 
     /**
@@ -57,7 +67,8 @@ class StoreController extends Controller
      */
     public function edit($id)
     {
-        //
+        $store = Store::findOrFail($id);
+        return view('stores.edit' , compact('store'));
     }
 
     /**
@@ -69,7 +80,10 @@ class StoreController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $store = Store::findOrFail($id);
+        $data = $request->all();
+        $store->update($data);
+        return redirect()->route('store.index')->with('success' , 'success updated ');
     }
 
     /**
@@ -80,6 +94,9 @@ class StoreController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $store = Store::findOrFail($id);
+        $store->delete();
+        return redirect()->route('store.index')->with('success' , 'sucess deleted');
+
     }
 }
